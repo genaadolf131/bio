@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>genaadolf bio <3</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root { --purp: #8a2be2; --bg: #000; }
+        * { box-sizing: border-box; -webkit-user-drag: none; user-select: none; outline: none; }
+        body { margin: 0; padding: 0; background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+        /* Видео-фон */
+        .video-bg { position: fixed; inset: 0; z-index: -1; opacity: 0; transition: 2s ease; }
+        #bgVideo { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.25); pointer-events: none; }
+
+        /* Капча */
+        #verify-layer { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: 0.5s; }
+        .v-card { background: #000; border: 1px solid #111; padding: 15px 25px; border-radius: 4px; display: flex; align-items: center; gap: 20px; cursor: pointer; transition: 0.2s; }
+        .v-card:hover { border-color: #333; }
+        .v-spin { width: 20px; height: 20px; border: 2px solid var(--purp); border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
+
+        /* Контент */
+        #main-ui { display: none; opacity: 0; transition: 1.5s ease; padding-bottom: 100px; }
+        section { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; opacity: 0; transform: translateY(30px); transition: 1s ease; }
+        section.visible { opacity: 1; transform: translateY(0); }
+
+        /* Плеер */
+        .player {
+            background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 40px;
+            padding: 40px 30px; text-align: center; width: 320px; position: relative;
+        }
+        .p-ring-area { position: relative; width: 180px; height: 180px; margin: 0 auto 20px; }
+        .progress-ring { position: absolute; transform: rotate(-90deg); top: 0; left: 0; }
+        .p-bar { stroke-dasharray: 534; stroke-dashoffset: 534; stroke: var(--purp); transition: 0.3s; }
+        .p-bg { stroke: rgba(255, 255, 255, 0.05); }
+        
+        .avatar { width: 140px; height: 140px; border-radius: 50%; overflow: hidden; position: absolute; top: 20px; left: 20px; cursor: pointer; z-index: 5; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        h1 { font-family: 'Press Start 2P', cursive; font-size: 10px; margin: 10px 0 20px; letter-spacing: 1px; }
+        
+        /* Кнопки */
+        .btn-container { display: flex; flex-direction: column; gap: 10px; }
+        .btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255,255,255,0.03);
+            color: #fff; padding: 12px; border-radius: 12px; border: 1px solid #222;
+            font-size: 11px; font-weight: bold; text-decoration: none; transition: 0.3s;
+        }
+        .btn:hover { border-color: var(--purp); background: rgba(138, 43, 226, 0.1); transform: scale(1.02); }
+        .btn i { color: var(--purp); }
+
+        #hint { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); color: var(--purp); font-size: 24px; opacity: 0; transition: 0.5s; animation: bounce 2s infinite; }
+        
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);} 40% {transform: translateY(-10px) translateX(-50%);} 60% {transform: translateY(-5px) translateX(-50%);} }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <!-- Слой капчи -->
+    <div id="verify-layer">
+        <div class="v-card" onclick="startVerification()">
+            <div class="v-spin" id="loader"></div>
+            <span id="v-text" style="font-size: 14px;">Verify you are human</span>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Cloudflare_Logo.svg" width="40" style="filter: brightness(0.5);">
+        </div>
+    </div>
+
+    <div class="video-bg" id="v-bg">
+        <video id="bgVideo" muted loop playsinline>
+            <source src="https://raw.githubusercontent.com/genaadolf131/bio/main/videoplayback.mp4" type="video/mp4">
+        </video>
+    </div>
+    
+    <div id="hint"><i class="fas fa-chevron-down"></i></div>
+
+    <div id="main-ui">
+        <section id="s1" class="visible">
+            <div class="player">
+                <div class="p-ring-area">
+                    <svg class="progress-ring" width="180" height="180">
+                        <circle class="p-bg" stroke-width="4" fill="transparent" r="85" cx="90" cy="90""")/>>
+                        <circle id="p-bar" class="p-bar" stroke-width="4" fill="transparent" r="85" cx="90" cy="90""")/>>
+                    </svg>
+                    <div class="avatar"><img src="https://raw.githubusercontent.com/genaadolf131/bio/main/image.png"></div>
+                </div>
+                <h1>genaadolf</h1>
+                <div class="btn-container">
+                    <a href="https://t.me/genaadolf" target="_blank" class="btn"><i class="fab fa-telegram-plane"></i> TELEGRAM</a>
+                    <a href="https://github.com/genaadolf131" target="_blank" class="btn"><i class="fab fa-github"></i> GITHUB</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="s2">
+            <h2 style="color:var(--purp); font-family:'Press Start 2P'; font-size:14px;">ABOUT ME</h2>
+            <p style="max-width:300px; text-align:center; color:#888; line-height:1.6; font-size: 13px;">Junior developer focused on creating clean, immersive digital experiences.</p>
+        </section>
+    </div>
+
+    <audio id="audio" loop>
+        <source src="https://raw.githubusercontent.com/genaadolf131/bio/main/music.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const audio = document.getElementById('audio');
+        const video = document.getElementById('bgVideo');
+        const loader = document.getElementById('loader');
+        const vText = document.getElementById('v-text');
+        const pBar = document.getElementById('p-bar');
+        const circ = 2 * Math.PI * 85;
+
+        pBar.style.strokeDasharray = circ;
+
+        function startVerification() {
+            loader.style.display = 'block';
+            vText.innerText = 'Verifying...';
+            
+            setTimeout(() => {
+                document.getElementById('verify-layer').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('verify-layer').style.display = 'none';
+                    showContent();
+                }, 500);
+            }, 1500);
+        }
+
+        function showContent() {
+            const ui = document.getElementById('main-ui');
+            const vBg = document.getElementById('v-bg');
+            ui.style.display = 'block';
+            setTimeout(() => { 
+                ui.style.opacity = '1'; 
+                vBg.style.opacity = '1';
+                document.getElementById('hint').style.opacity = '1';
+            }, 100);
+            
+            video.play();
+            audio.play();
+        }
+
+        // Логика скролла и прогресс-бара
+        window.addEventListener('scroll', () => {
+            const pixels = window.pageYOffset;
+            const height = document.documentElement.scrollHeight - window.innerHeight;
+            const percentage = (pixels / height) * 100;
+            
+            // Обновляем кольцо
+            const offset = circ - (percentage / 100 * circ);
+            pBar.style.strokeDashoffset = offset;
+
+            // Проявление секций
+            document.querySelectorAll('section').forEach(s => {
+                const top = s.getBoundingClientRect().top;
+                if(top < window.innerHeight * 0.7) s.classList.add('visible');
+            });
+        });
+    </script>
+</body>
+</html>
